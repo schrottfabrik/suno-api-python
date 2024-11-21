@@ -16,7 +16,7 @@ Github: [https://github.com/gochendong/suno-api](https://github.com/gochendong/b
 
 ## Install
 
-1. Edit the `.env.example` file, rename to `.env` and fill in cookie.
+1. from F12 Network https://clerk.suno.com/v1/client?xxx. fetch Cookie and edit the `.env.example` file, rename to `.env` and fill in cookie.
 
 2. Start the service
     ```
@@ -28,6 +28,7 @@ Github: [https://github.com/gochendong/suno-api](https://github.com/gochendong/b
 ## Referenced project
 
 [https://github.com/SunoAI-API/Suno-API](https://github.com/SunoAI-API/Suno-API)
+
 [https://github.com/gcui-art/suno-api](https://github.com/gcui-art/suno-api)
 
 ## License
