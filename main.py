@@ -50,7 +50,7 @@ async def get_root():
 async def generate(
     data: schemas.CustomModeGenerateParam
 ):
-    token = await get_token()
+    token = get_token()
     try:
         data_response = await generate_music(data.dict(), token)
         return data_response
@@ -64,7 +64,7 @@ async def generate(
 async def generate_with_song_description(
     data: schemas.DescriptionModeGenerateParam, token: str = Depends(get_token)
 ):
-    token = await get_token()
+    token = get_token()
     try:
         resp = await generate_music(data.dict(), token)
         return resp
@@ -76,7 +76,7 @@ async def generate_with_song_description(
 
 @app.get("/feed/{aid}")
 async def fetch_feed(aid: str):
-    token = await get_token()
+    token = get_token()
     try:
         resp = await get_feed(aid, token)
         return resp
@@ -88,7 +88,7 @@ async def fetch_feed(aid: str):
 
 @app.get("/feeds/{aid}")
 async def fetch_feed(aid: str):
-    token = await get_token()
+    token = get_token()
     try:
         resp = await get_feeds(aid, token)
         return resp
@@ -102,7 +102,7 @@ async def fetch_feed(aid: str):
 async def generate_lyrics_post(
     data: schemas.GenerateLyricsParam
 ):
-    token = await get_token()
+    token = get_token()
     try:
         resp = await generate_lyrics(data.prompt, token)
         return resp
@@ -114,7 +114,7 @@ async def generate_lyrics_post(
 
 @app.get("/lyrics/{lid}")
 async def fetch_lyrics(lid: str):
-    token = await get_token()
+    token = get_token()
     try:
         resp = await get_lyrics(lid, token)
         return resp
@@ -126,7 +126,7 @@ async def fetch_lyrics(lid: str):
 
 @app.post("/generate/concat")
 async def concat(data: schemas.ConcatParam):
-    token = await get_token()
+    token = get_token()
     try:
         resp = await concat_music(data.dict(), token)
         return resp
