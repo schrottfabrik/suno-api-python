@@ -26,12 +26,15 @@ async def fetch(url, headers=None, data=None, method="POST"):
             async with session.request(
                 method=method, url=url, data=data, headers=headers
             ) as resp:
-                resp.raise_for_status()  # Raises an exception for HTTP errors
-                return await resp.json()
-        except aiohttp.ClientResponseError as e:
-            # Handle HTTP errors
-            error_text = await e.response.text()
-            raise Exception(f"HTTP Error {e.status}: {error_text}")
+                # Read the response content
+                text = await resp.text()
+                
+                # Check for HTTP errors
+                if resp.status >= 400:
+                    raise Exception(f"HTTP Error {resp.status}: {text}")
+                
+                # If the response is JSON, parse it
+                return json.loads(text)
         except Exception as e:
             # Handle other exceptions
             raise Exception(str(e))
