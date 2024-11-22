@@ -26,9 +26,15 @@ async def fetch(url, headers=None, data=None, method="POST"):
             async with session.request(
                 method=method, url=url, data=data, headers=headers
             ) as resp:
+                resp.raise_for_status()  # Raises an exception for HTTP errors
                 return await resp.json()
+        except aiohttp.ClientResponseError as e:
+            # Handle HTTP errors
+            error_text = await e.response.text()
+            raise Exception(f"HTTP Error {e.status}: {error_text}")
         except Exception as e:
-            raise Exception(resp.text)
+            # Handle other exceptions
+            raise Exception(str(e))
 
 
 async def get_feed(ids, token):
