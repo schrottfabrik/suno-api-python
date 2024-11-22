@@ -57,11 +57,11 @@ suno_auth.load_cookie(os.getenv("COOKIE"))
 def fetch_session_id(suno_cookie: SunoCookie):
     headers = {"cookie": suno_cookie.get_cookie()}
     headers.update(COMMON_HEADERS)
-    resp = requests.get(CLERK_BASE_URL, headers=headers, timeout=5)
-    session_id = resp.json().get("response").get("last_active_session_id")
-    expire_at = resp.json().get("response").get("sessions")[0]["expire_at"]
+    session_resp = requests.get(CLERK_BASE_URL, headers=headers, timeout=5)
+    session_id = session_resp.json().get("response").get("last_active_session_id")
+    expire_at = session_resp.json().get("response").get("sessions")[0]["expire_at"]
     email = (
-        resp.json()
+        session_resp.json()
         .get("response")
         .get("sessions")[0]["user"]
         .get("email_addresses")[0]
@@ -87,18 +87,18 @@ def update_token(suno_cookie: SunoCookie):
     # url = f"https://clerk.suno.com/v1/client/sessions/{session_id}/tokens?__clerk_api_version=2021-02-05&_clerk_js_version={clerk_js_version}"
     url = f"https://clerk.suno.com/v1/client/sessions/{session_id}/tokens?_clerk_js_version={clerk_js_version}"
 
-    resp = requests.post(
+    update_resp = requests.post(
         url=url,
         headers=headers,
         timeout=5,
     )
 
-    resp_headers = dict(resp.headers)
+    resp_headers = dict(update_resp.headers)
     set_cookie = resp_headers.get("Set-Cookie")
     suno_cookie.load_cookie(set_cookie)
-    token = resp.json().get("jwt")
+    token = update_resp.json().get("jwt")
     if not token:
-        logger.error(f"update token failed, response -> {resp.json()}")
+        logger.error(f"update token failed, response -> {update_resp.json()}")
         return
     suno_cookie.set_token(token)
 
